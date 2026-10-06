@@ -43,8 +43,8 @@ attackLab/
 | Phase | Title                                | Status      |
 |-------|--------------------------------------|-------------|
 | 0     | Project Setup and Scaffolding        | Complete    |
-| 1     | Shared Models and Base Class         | In Progress |
-| 2     | Agent — FastAPI Server and Auth      | Not Started |
+| 1     | Shared Models and Base Class         | Complete    |
+| 2     | Agent — FastAPI Server and Auth      | In Progress |
 | 3     | T1082 — System Information Discovery | Not Started |
 | 4     | Controller CLI and HTTP Client       | Not Started |
 | 5     | T1057 — Process Discovery            | Not Started |
