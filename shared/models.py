@@ -15,20 +15,20 @@ class TechniqueResult:
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())  # the timestamp of when the simulation was run
     duration_ms: int = 0    # the duration of the simulation in milliseconds
 
-def to_dict(self) -> dict:
-    """Convert the TechniqueResult dataclass to a dictionary."""
-    return {
-        "technique_id": self.technique_id,
-        "technique_name": self.technique_name,
-        "tactic": self.tactic,
-        "host": self.host,
-        "success": self.success,
-        "results": self.results,
-        "errors": self.errors,
-        "timestamp": self.timestamp,
-        "duration_ms": self.duration_ms
-    }
-
-def to_json(self) -> str:
-    """Convert the TechniqueResult dataclass to a JSON string."""
-    return json.dumps(self.to_dict(), indent=2)
+    def to_dict(self) -> dict:
+        """Convert the TechniqueResult dataclass to a dictionary."""
+        return {
+            "technique_id": self.technique_id,
+            "technique_name": self.technique_name,
+            "tactic": self.tactic,
+            "host": self.host,
+            "success": self.success,
+            "results": self.results,
+            "errors": self.errors,
+            "timestamp": self.timestamp,
+            "duration_ms": self.duration_ms
+        }
+    
+    def to_json(self) -> str:
+        """Convert the TechniqueResult dataclass to a JSON string."""
+        return json.dumps(self.to_dict(), indent=2)
