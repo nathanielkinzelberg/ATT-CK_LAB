@@ -43,7 +43,7 @@ attackLab/
 | Phase | Title                                | Status      |
 |-------|--------------------------------------|-------------|
 | 0     | Project Setup and Scaffolding        | Complete    |
-| 1     | Shared Models and Base Class         | Not Started |
+| 1     | Shared Models and Base Class         | In Progress |
 | 2     | Agent — FastAPI Server and Auth      | Not Started |
 | 3     | T1082 — System Information Discovery | Not Started |
 | 4     | Controller CLI and HTTP Client       | Not Started |
@@ -76,4 +76,5 @@ At the end of every phase, before Nathaniel commits, always update:
 - Ask comprehension questions after each major concept.
 - Never run git commit, git push, git add, or any Git write command — Nathaniel does all Git operations.
 - If Nathaniel seems confused, stop and go back to basics immediately.
-- At the end of each phase, provide the exact git commit command to copy-paste.
+- Nathaniel commits whenever he is ready. Never prompt him to commit.
+- At the end of each phase, provide a suggested commit message only. Nathaniel writes his own git commands.
