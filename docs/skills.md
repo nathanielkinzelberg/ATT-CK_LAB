@@ -41,6 +41,8 @@
 | Skill | Phase |
 |-------|-------|
 | IP addresses and private ranges (RFC1918) | 0, 8 |
+| SSH — remote access to a Linux machine | 0 |
+| Headless Linux setup | 0 |
 | HTTP — client/server communication | 2, 4 |
 | TCP sockets and ports | 8 |
 | API tokens over HTTP headers | 2 |

@@ -87,6 +87,28 @@ A list of things that are explicitly allowed. The agent only runs techniques tha
 
 ---
 
+## Networking and SSH
+
+### SSH (Secure Shell)
+A protocol for logging into and running commands on a remote machine securely over a network. Once SSH is set up on the Pi, you can control it entirely from your laptop without ever needing a keyboard or monitor plugged into it.
+
+### IP Address
+A unique address that identifies a device on a network. Like a home address for a computer. The Pi's address is `192.168.1.101` — your laptop uses this to find it on the home network.
+
+### Static IP vs Dynamic IP
+By default, a router assigns a device a new IP address every time it reboots — this is called a dynamic IP. A static IP means the router always gives the device the same address. We will configure a static IP for the Pi later so it never changes.
+
+### SSH Fingerprint
+When you SSH into a machine for the first time, your laptop asks "do you trust this machine?" and shows a fingerprint — a unique identifier for that machine's SSH keys. Saying yes saves it. If the fingerprint ever changes unexpectedly it could mean someone is intercepting your connection.
+
+### systemctl
+A Linux command for managing services — programs that run in the background. `sudo systemctl enable ssh` makes SSH start automatically on boot. `sudo systemctl start ssh` starts it immediately. `sudo systemctl status ssh` checks if it's running.
+
+### Headless
+Running a computer without a monitor, keyboard, or mouse attached. Once SSH is set up, the Pi runs headless — you control it entirely from your laptop over the network.
+
+---
+
 ## Git and GitHub
 
 ### Repository (repo)

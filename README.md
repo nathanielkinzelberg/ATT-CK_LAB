@@ -55,7 +55,7 @@ JSON report  ·  terminal output  ·  logs
 
 ## Project Status
 
-> **Phase 0 — Scaffolding** (current)
+> **Phase 1 — Shared Models and Base Class** (current)
 
 This project is under active development. See the roadmap below.
 

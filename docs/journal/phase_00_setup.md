@@ -32,9 +32,12 @@ Set up the complete project structure before writing any real code. Create the f
 | Laptop OS | Ubuntu Linux |
 | Python version | 3.12.3 |
 | Git version | 2.43.0 |
-| Raspberry Pi model | Raspberry Pi 5 |
-| Pi OS | Raspberry Pi OS Bookworm |
-| GitHub repo | https://github.com/nathanielkinzelberg/ATT&CK_LAB |
+| Raspberry Pi model | Raspberry Pi 5 8GB |
+| Pi OS | Debian GNU/Linux 12 (Bookworm) |
+| Pi Python version | 3.11.2 |
+| Pi IP address | 192.168.1.101 |
+| Pi username | nathanielkinzelberg |
+| GitHub repo | https://github.com/nathanielkinzelberg/ATT-CK_LAB |
 
 ---
 
@@ -61,9 +64,46 @@ A plain text file listing the Python packages a project depends on. Running `pip
 
 ---
 
+## SSH Setup Process
+
+### Enabling SSH on the Pi
+Opened a terminal on the Pi and ran:
+```bash
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
+### Finding the Pi's IP address
+```bash
+hostname -I
+# returned: 192.168.1.101
+```
+
+### Connecting from the laptop
+```bash
+ssh nathanielkinzelberg@192.168.1.101
+```
+
+---
+
 ## Problems Encountered
 
-*(Fill this in as you work through the phase.)*
+### Keyboard layout was Hebrew on first boot
+**Symptom:** Lowercase letters produced no output. Uppercase worked with Caps Lock.
+**Fix:** Went into Pi settings and changed the country to US. Keyboard layout corrected immediately.
+
+### Bluetooth mouse would not pair
+**Symptom:** `bluetoothctl scan on` found nearby devices but not the mouse.
+**Fix:** Never resolved. Proceeded with keyboard only. Mouse is not needed once SSH is set up.
+
+### SSH connection hung with no response
+**Symptom:** Running `ssh nathanielkinzelberg@192.168.1.101` produced no output and hung indefinitely.
+**Cause:** SSH service needed a restart after being enabled.
+**Fix:** Ran `sudo systemctl restart ssh` on the Pi, then SSH connected immediately from the laptop.
+
+### SSH asked to confirm key fingerprint on first connect
+**Symptom:** Message saying the host is not known and asking to confirm.
+**This is normal.** Type `yes`. The fingerprint is saved and the prompt never appears again for this host.
 
 ---
 
