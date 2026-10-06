@@ -28,3 +28,7 @@ def to_dict(self) -> dict:
         "timestamp": self.timestamp,
         "duration_ms": self.duration_ms
     }
+
+def to_json(self) -> str:
+    """Convert the TechniqueResult dataclass to a JSON string."""
+    return json.dumps(self.to_dict(), indent=2)
