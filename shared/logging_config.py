@@ -3,7 +3,7 @@ import sys      # gives access to stdout and stderr streams
 
 def get_logger(name: str) -> logging.Logger:
     """Create and return a logger with a consistent format"""
-    logger = logging.getLogger(name)
+    logger = logging.getLogger(name)    # Create a logger with the given name
 
     if logger.handlers:
         return logger  # Return the existing logger if it already has handlers
