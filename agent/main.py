@@ -1,25 +1,25 @@
 import sys
 import os
-from fastapi import FastAPI, Depends
-from dotenv import load_dotenv
-from shared.logging_config import get_logger
-from agent.auth import verify_token
+from fastapi import FastAPI, Depends   # FastAPI creates the server, Depends attaches checks to endpoints
+from dotenv import load_dotenv         # loads the .env file into memory
+from shared.logging_config import get_logger  # shared logging setup from Phase 1
+from agent.auth import verify_token    # our token check function from auth.py
 
-load_dotenv()
+load_dotenv()  # reads .env and makes ATTACK_PI_API_TOKEN available to os.getenv()
 
-logger = get_logger("agent")
+logger = get_logger("agent")  # creates a logger named "agent" — shows up in every log line
 
-app = FastAPI(title="ATT&CK-Pi Lab Agent")
+app = FastAPI(title="ATT&CK-Pi Lab Agent")  # creates the web server
 
 
-@app.get("/health")
+@app.get("/health")  # no auth required — controller needs to check health without a token
 async def health():
     """Returns the agent's status."""
     logger.info("Health check requested")
     return {"status": "ok", "agent": "ATT&CK-Pi Lab"}
 
 
-@app.get("/techniques")
+@app.get("/techniques")  # auth required — Depends(verify_token) runs the token check first
 async def list_techniques(verified=Depends(verify_token)):
     """Returns the list of supported ATT&CK techniques."""
     logger.info("Techniques list requested")
