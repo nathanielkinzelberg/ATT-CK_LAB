@@ -1,17 +1,69 @@
-import platform
-import socket
-import time
-from shared.base import AttackTechnique
-from shared.models import TechniqueResult
-from shared.logging_config import get_logger
+import platform  # built-in Python library — reads OS, kernel, architecture, Python version
+import socket    # built-in Python library — used to get the hostname
+import time      # built-in Python library — used to measure how long the technique takes
+from shared.base import AttackTechnique    # the base class template from Phase 1
+from shared.models import TechniqueResult  # the standard result shape from Phase 1
+from shared.logging_config import get_logger  # shared logging setup from Phase 1
 
 logger = get_logger("t1082")  # creates a logger named "t1082" — shows up in every log line
 
+
 class SystemInfoDiscovery(AttackTechnique):
-    """T1082 - Collects system information from the target machine"""
+    """T1082 - Collects system information from the target machine."""
     technique_id = "T1082"
     technique_name = "System Information Discovery"
     tactic = "Discovery"
-    description = "Collects host, OS, kernel, architechture, and hardware information"
+    description = "Collects host, OS, kernel, architecture, and hardware information."
     supported_platforms = ["linux"]
     risk_level = "low"
+
+    def run(self) -> TechniqueResult:
+        """Execute T1082 and return collected system information."""
+        logger.info("Starting T1082 - System Information Discovery")
+        start_time = time.time()  # record start time so we can calculate duration later
+        errors = []   # collect any errors — technique continues even if one part fails
+        results = {}  # empty dict that gets filled with collected data
+
+        try:
+            # platform and socket are safe built-in libraries — no shell commands needed
+            results["hostname"] = socket.gethostname()        # machine name e.g. "raspberrypi"
+            results["os"] = platform.system()                 # e.g. "Linux"
+            results["os_version"] = platform.version()        # full OS version string
+            results["kernel"] = platform.release()            # kernel version e.g. "6.1.0"
+            results["architecture"] = platform.machine()      # e.g. "aarch64" on Raspberry Pi
+            results["python_version"] = platform.python_version()  # e.g. "3.11.2"
+            results["processor"] = platform.processor()       # processor name
+        except Exception as e:
+            errors.append(f"platform collection failed: {str(e)}")
+            # if this block fails we still continue to the /proc reads below
+
+        try:
+            results["cpu_info"] = self._read_proc_cpuinfo()   # reads /proc/cpuinfo
+        except Exception as e:
+            errors.append(f"cpu_info failed: {str(e)}")
+
+        try:
+            results["memory_info"] = self._read_proc_meminfo()  # reads /proc/meminfo
+        except Exception as e:
+            errors.append(f"memory_info failed: {str(e)}")
+
+        try:
+            results["uptime_seconds"] = self._read_proc_uptime()  # reads /proc/uptime
+        except Exception as e:
+            errors.append(f"uptime_seconds failed: {str(e)}")
+
+        duration_ms = int((time.time() - start_time) * 1000)  # total time in milliseconds
+        success = len(errors) == 0  # success only if zero errors occurred
+
+        logger.info(f"T1082 completed - success={success}, duration={duration_ms}ms")
+
+        return TechniqueResult(  # package everything into the standard result shape
+            technique_id=self.technique_id,
+            technique_name=self.technique_name,
+            tactic=self.tactic,
+            host=socket.gethostname(),
+            success=success,
+            results=results,
+            errors=errors,
+            duration_ms=duration_ms
+        )
