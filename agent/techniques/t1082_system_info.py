@@ -67,3 +67,14 @@ class SystemInfoDiscovery(AttackTechnique):
             errors=errors,
             duration_ms=duration_ms
         )
+
+    def _read_proc_meminfo(self) -> dict:
+        """Read memory information from /proc/meminfo."""
+        mem = {}
+        with open("/proc/meminfo", "r") as f:  # open the /proc/meminfo virtual file
+            for line in f:                      # read it line by line
+                if "MemTotal" in line:
+                    mem["total_kb"] = int(line.split()[1])      # total RAM in kilobytes
+                if "MemAvailable" in line:
+                    mem["available_kb"] = int(line.split()[1])  # available RAM in kilobytes
+        return mem
