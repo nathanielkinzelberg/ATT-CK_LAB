@@ -92,3 +92,8 @@ class SystemInfoDiscovery(AttackTechnique):
                 if "MemAvailable" in line:
                     mem["available_kb"] = int(line.split()[1])  # available RAM in kilobytes
         return mem
+
+    def _read_proc_uptime(self) -> float:
+        """Read system uptime in seconds from /proc/uptime."""
+        with open("/proc/uptime", "r") as f:  # open the /proc/uptime virtual file
+            return float(f.read().split()[0])  # first number is uptime in seconds
