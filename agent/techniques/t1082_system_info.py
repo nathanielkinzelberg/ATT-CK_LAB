@@ -68,6 +68,20 @@ class SystemInfoDiscovery(AttackTechnique):
             duration_ms=duration_ms
         )
 
+    def _read_proc_cpuinfo(self) -> dict:
+        """Read CPU information from /proc/cpuinfo."""
+        cpu = {}
+        with open("/proc/cpuinfo", "r") as f:  # open the /proc/cpuinfo virtual file
+            for line in f:                      # read it line by line
+                if "Model name" in line or "model name" in line:
+                    cpu["model"] = line.split(":")[1].strip()    # CPU model name
+                if "Hardware" in line:
+                    cpu["hardware"] = line.split(":")[1].strip() # hardware platform name
+                if "Model" in line and "model" not in line.lower():
+                    cpu["pi_model"] = line.split(":")[1].strip() # Raspberry Pi model string
+        return cpu
+
+
     def _read_proc_meminfo(self) -> dict:
         """Read memory information from /proc/meminfo."""
         mem = {}
