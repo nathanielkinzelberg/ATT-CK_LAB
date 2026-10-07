@@ -1,9 +1,10 @@
 import sys
 import os
-from fastapi import FastAPI, Depends   # FastAPI creates the server, Depends attaches checks to endpoints
+from fastapi import FastAPI, Depends, HTTPException   # FastAPI creates the server, Depends attaches checks to endpoints
 from dotenv import load_dotenv         # loads the .env file into memory
 from shared.logging_config import get_logger  # shared logging setup from Phase 1
 from agent.auth import verify_token    # our token check function from auth.py
+from agent.techniques.t1082_system_info import SystemInfoDiscovery  # our T1082 technique implementation 
 
 load_dotenv()  # reads .env and makes ATTACK_PI_API_TOKEN available to os.getenv()
 
@@ -57,3 +58,22 @@ async def list_techniques(verified=Depends(verify_token)):
             }
         ]
     }
+
+@app.post("/techniques/{technique_id}/execute") # technique_id comed from the URL path, e.g. /techniques/T1082/execute
+async def execute_technique(technique_id: str, verified=Depends(verify_token)):
+    """Execute a technique by ID and return the result."""
+    logger.info(f"Execute request received for {technique_id}")
+
+    techniques = {
+        "T1082": SystemInfoDiscovery, # maps the ID to the class
+    }
+
+    if technique_id not in techniques:
+        logger.warning(f"Rejected unknown technique: {technique_id}")
+        raise HTTPException(status_code=404, detail=f"Technique {technique_id} not found")
+
+    technique = techniques[technique_id]() # created an instance of the technique class
+    result = technique.run() # run the technique as a dictionary
+
+    logger.info(f"{technique_id} execution complete - success={result.success}")
+    return result.to_dict() # return the result as a dictionary to the controller
