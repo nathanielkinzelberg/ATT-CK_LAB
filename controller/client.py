@@ -12,8 +12,8 @@ class AgentClient:
     """Handles all HTTP communication with the agent on the Raspberry Pi."""
 
     def __init__(self, host: str, port: int = 8000):
-        self.base.url = f"http://{host}:{port}"     # example: http://192.168.1.101:8000
-        self.headers = {"X-API-TOKEN": API_TOKEN}   # Token sent with every request
+        self.base_url = f"http://{host}:{port}"     # example: http://192.168.1.101:8000
+        self.headers = {"X-API-Token": API_TOKEN}   # Token sent with every request
         self.timeout = 30                           # seconds before giving up on a request
 
     def health_check(self) -> dict:
