@@ -46,8 +46,8 @@ attackLab/
 | 1     | Shared Models and Base Class         | Complete    |
 | 2     | Agent — FastAPI Server and Auth      | Complete    |
 | 3     | T1082 — System Information Discovery | Complete    |
-| 4     | Controller CLI and HTTP Client       | In Progress |
-| 5     | T1057 — Process Discovery            | Not Started |
+| 4     | Controller CLI and HTTP Client       | Complete    |
+| 5     | T1057 — Process Discovery            | In Progress |
 | 6     | T1087 — Account Discovery            | Not Started |
 | 7     | T1016 — Network Config Discovery     | Not Started |
 | 8     | T1046 — Network Service Scanning     | Not Started |
