@@ -43,3 +43,27 @@ class AccountDiscovery(AttackTechnique):
             errors=erros,
             duration_ms=duration_ms,
         )
+
+    def _parse_passwd(self) -> list:
+        """Read and parse user accounts from /etc/passwd."""
+        accounts []
+
+        with open("/etc/passwd", "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+
+                fields = line.split(":")
+                if len(fields) != 7:
+                    continue
+
+                accounts.append({
+                    "username": fields[0],
+                    "uid": int(fields[2]),
+                    "gid": int(fields[3]),
+                    "home": fields[5],
+                    "shell": fields[6],
+                })
+
+        return sorted(accounts, key=lambda a: a["uid"])
