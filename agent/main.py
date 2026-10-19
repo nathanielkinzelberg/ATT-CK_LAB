@@ -4,7 +4,8 @@ from fastapi import FastAPI, Depends, HTTPException   # FastAPI creates the serv
 from dotenv import load_dotenv         # loads the .env file into memory
 from shared.logging_config import get_logger  # shared logging setup from Phase 1
 from agent.auth import verify_token    # our token check function from auth.py
-from agent.techniques.t1082_system_info import SystemInfoDiscovery  # our T1082 technique implementation 
+from agent.techniques.t1082_system_info import SystemInfoDiscovery  # T1082 technique implementation 
+from agent.techniques.t1057_process_discovery import ProcessDiscovery # T1057 technique implementation
 
 load_dotenv()  # reads .env and makes ATTACK_PI_API_TOKEN available to os.getenv()
 
@@ -66,6 +67,7 @@ async def execute_technique(technique_id: str, verified=Depends(verify_token)):
 
     techniques = {
         "T1082": SystemInfoDiscovery, # maps the ID to the class
+        "T1057": ProcessDiscovery,    # maps the ID to the Process Discovery class
     }
 
     if technique_id not in techniques:
