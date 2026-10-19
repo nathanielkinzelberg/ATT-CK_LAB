@@ -46,3 +46,30 @@ class ProcessDiscovery(AttackTechnique):
 
     def _get_processes(self) -> list:
         """Read running processes from /proc."""
+        processes = []
+
+        for entry in os.listdir("/proc"):
+            if not entry.isdigit():
+                continue
+
+            pid = int(entry)
+            process = {"pid": pid}
+
+            try:
+                with open(f"/proc/{pid}/comm", "r") as f:
+                    process["name"] = f.read().strip()
+            except Exception:
+                process["name"] = "unknown"
+
+            try:
+                with open(f"/proc/{pid}/status", "r") as f:
+                    for line in f:
+                        if line.startswith("Uid:"):
+                            uid = int(line.split()[1])
+                            process["uid"] = uidbreak
+            except Exception:
+                process["uid"] = -1
+
+            processes.append(process)
+
+        return sorted(processes, key = lambda p: p["pid"])
