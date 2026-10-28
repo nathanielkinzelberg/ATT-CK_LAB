@@ -54,3 +54,20 @@ class NetworkServiceScan(AttackTechnique):
             errors=errors,
             duration_ms=duration_ms,
         )
+
+    def _scan_port(self, host: str, port: int) -> dict | None:
+        """Try to connect to a single port. Returns result dict if open, None if closed."""
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(0.5)
+            result = s.connect_ex((host,port))
+            s.close()
+            if result == 0:
+                return {
+                    "port": port,
+                    "service": PORT_NAMES.get(port, "unknown"),
+                    "state": "open"
+                }
+        except Exception:
+            pass
+        return None
