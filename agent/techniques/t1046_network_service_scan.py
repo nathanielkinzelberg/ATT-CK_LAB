@@ -39,6 +39,8 @@ class NetworkServiceScan(AttackTechnique):
         errors = []
         results = {}
 
+        
+
         duration_ms = int((time.time() - start_time) * 1000)
         success = len(errors) == 0
 
@@ -71,3 +73,16 @@ class NetworkServiceScan(AttackTechnique):
         except Exception:
             pass
         return None
+
+    def _scan_host(self, host: str) -> list:
+        """Scan all TOP_PORTS on a host in parallel using threads."""
+        open_ports = []
+
+        with ThreadPoolExecutor(max_workers=50) as executor:
+            results = executor.map(lambda p: self._scan_port(host, p), TOP_PORTS)
+
+        for result in results:
+            if result is not None:
+                open_ports.append(result)
+
+        return sorted(open_ports, key=lambda x: x["port"])
