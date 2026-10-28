@@ -49,8 +49,8 @@ attackLab/
 | 4     | Controller CLI and HTTP Client       | Complete    |
 | 5     | T1057 — Process Discovery            | Complete    |
 | 6     | T1087 — Account Discovery            | Complete    |
-| 7     | T1016 — Network Config Discovery     | In Progress |
-| 8     | T1046 — Network Service Scanning     | Not Started |
+| 7     | T1016 — Network Config Discovery     | Complete    |
+| 8     | T1046 — Network Service Scanning     | In Progress |
 | 9     | Automated Tests                      | Not Started |
 | 10    | Reporting and Structured Output      | Not Started |
 | 11    | Deploy Agent as Raspberry Pi Service | Not Started |

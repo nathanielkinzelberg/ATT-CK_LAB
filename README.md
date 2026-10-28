@@ -45,17 +45,17 @@ JSON report  ·  terminal output  ·  logs
 
 | Technique ID | Name | Tactic | Status |
 |---|---|---|---|
-| T1082 | System Information Discovery | Discovery | Planned |
-| T1057 | Process Discovery | Discovery | Planned |
-| T1087 | Account Discovery | Discovery | Planned |
-| T1016 | System Network Configuration Discovery | Discovery | Planned |
+| T1082 | System Information Discovery | Discovery | Complete |
+| T1057 | Process Discovery | Discovery | Complete |
+| T1087 | Account Discovery | Discovery | Complete |
+| T1016 | System Network Configuration Discovery | Discovery | Complete |
 | T1046 | Network Service Scanning | Discovery | Planned |
 
 ---
 
 ## Project Status
 
-> **Phase 1 — Shared Models and Base Class** (current)
+> **Phase 8 — T1046 Network Service Scanning** (current)
 
 This project is under active development. See the roadmap below.
 
@@ -155,14 +155,20 @@ pytest
 ## Roadmap
 
 - [x] Phase 0 — Project scaffolding, directory structure, README
-- [ ] Phase 1 — Shared models and base technique class
-- [ ] Phase 2 — Agent: FastAPI server, health endpoint, auth
-- [ ] Phase 3 — First technique: T1082 System Information Discovery
-- [ ] Phase 4 — Controller CLI and HTTP client
-- [ ] Phase 5 — Remaining techniques: T1057, T1087, T1016, T1046
-- [ ] Phase 6 — Automated tests
-- [ ] Phase 7 — Reporting and structured output
-- [ ] Phase 8 — Deploy agent as a Raspberry Pi service
+- [x] Phase 1 — Shared models and base technique class
+- [x] Phase 2 — Agent: FastAPI server, health endpoint, auth
+- [x] Phase 3 — T1082 System Information Discovery
+- [x] Phase 4 — Controller CLI and HTTP client
+- [x] Phase 5 — T1057 Process Discovery
+- [x] Phase 6 — T1087 Account Discovery
+- [x] Phase 7 — T1016 Network Configuration Discovery
+- [ ] Phase 8 — T1046 Network Service Scanning
+- [ ] Phase 9 — Automated tests
+- [ ] Phase 10 — Reporting and structured output
+- [ ] Phase 11 — Deploy agent as a Raspberry Pi service
+- [ ] Phase 12 — GitHub portfolio polish
+- [ ] Phase 13 — Résumé bullets
+- [ ] Phase 14 — Interview prep
 
 ---
 
