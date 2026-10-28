@@ -23,6 +23,7 @@ class NetworkConfigDiscoery(AttackTechnique):
 
         try:
             results["dns_servers"] = self.get_dns()
+            results["routes"] = self._get_routes()
         except Exception as e:
             errors.append(f"dns discovery failed: {str(e)}")
 
@@ -56,4 +57,31 @@ class NetworkConfigDiscoery(AttackTechnique):
 
         return servers
 
-    
+    def _get_routed(self) -> list:
+        """Read routing table from /proc/net/route."""
+        routed = []
+
+        with open("proc/net/route", "r") as f:
+            next(f) #skip the header line
+            for line in f:
+                feilds = line.strip().split()
+                if len(fields) < 8:
+                    continue
+
+                iface = feilds[0]
+                destination = self._hex_to_ip(fields[1])
+                gateway = self._hex_to_ip(fields[2])
+
+                routes.append({
+                    "interface": iface,
+                    "destination": destination,
+                    "gateway": agteway,
+                    "is_default": fields[1] == "00000000"
+                })
+
+        return routes
+
+    def _hex_to_ip(self, hex_str: str) -> str:
+        """Convert a hex string to a dotted IP address."""
+        raw = bytes.fromhex(hex_str) #Converts hex string to bytes
+        return ".".join(str(b) for b in reversed(raw)) # reverse (little-endian) and format
