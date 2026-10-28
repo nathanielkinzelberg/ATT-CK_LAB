@@ -6,7 +6,7 @@ from shared.logging_config import get_logger
 
 logger = get_logger("t1016")
 
-class NetworkConfigDiscoery(AttackTechnique):
+class NetworkConfigDiscovery(AttackTechnique):
     """T1016 - Discovers network configuration on the target maching."""
     technique_id = "T1016"
     technique_name = "Network Configuration Discovery"
@@ -22,8 +22,9 @@ class NetworkConfigDiscoery(AttackTechnique):
         results = {}
 
         try:
-            results["dns_servers"] = self.get_dns()
+            results["dns_servers"] = self._get_dns()
             results["routes"] = self._get_routes()
+            results["interfaces"] = self._get_interfaces()
         except Exception as e:
             errors.append(f"dns discovery failed: {str(e)}")
 
@@ -57,11 +58,11 @@ class NetworkConfigDiscoery(AttackTechnique):
 
         return servers
 
-    def _get_routed(self) -> list:
+    def _get_routes(self) -> list:
         """Read routing table from /proc/net/route."""
-        routed = []
+        routes = []
 
-        with open("proc/net/route", "r") as f:
+        with open("/proc/net/route", "r") as f:
             next(f) #skip the header line
             for line in f:
                 feilds = line.strip().split()
@@ -85,3 +86,22 @@ class NetworkConfigDiscoery(AttackTechnique):
         """Convert a hex string to a dotted IP address."""
         raw = bytes.fromhex(hex_str) #Converts hex string to bytes
         return ".".join(str(b) for b in reversed(raw)) # reverse (little-endian) and format
+
+    def _get_interfaces(self) -> list:
+        """Get network interfaces and IP addresses using ip addr."""
+        import subprocess
+        interfaces = []
+        current = None
+        output = subprocess.check_output(["ip", "addr"], text=True)
+
+        for line in output.splitlines():
+            if line and not line.startswith(" "): # interface header line
+                parts = line.split(":")
+                if len(parts) >= 2:
+                    current = {"name": parts[1].strip(), "addresses": []}
+                    interfaces.append(current)
+            elif current and "inet " in line:       # IPv4 adress line
+                parts = line.strip().split()
+                current["addresses"].append(parts[1])
+
+        return interfaces
