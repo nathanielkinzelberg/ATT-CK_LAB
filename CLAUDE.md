@@ -4,7 +4,7 @@ This file tells Claude Code how to work with this repository.
 
 ## Project Overview
 
-A phase-by-phase Python adversary simulation platform built as a portfolio project targeting a Red Team Engineer role at SafeBreach.
+A phase-by-phase Python adversary simulation platform built as a portfolio project targeting a Red Team Engineer role at SafeBreach and a Threat Intelligence role at Porsche Digital.
 
 - **Laptop (Controller)** handles the CLI, sends authenticated requests, displays results, saves reports
 - **Raspberry Pi 5 (Agent)** runs a FastAPI server, executes whitelisted MITRE ATT&CK simulation modules, returns structured JSON
