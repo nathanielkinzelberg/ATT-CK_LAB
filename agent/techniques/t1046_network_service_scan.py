@@ -39,7 +39,13 @@ class NetworkServiceScan(AttackTechnique):
         errors = []
         results = {}
 
-        
+        try:
+            host = os.uname().nodename
+            results["target"] = host
+            results["open_ports"] = self._scan_host(host)
+            results["open_port_count"] = len(results["open_ports"])
+        except Exception as e:
+            errors.append(f"scan failed: {str(e)}")
 
         duration_ms = int((time.time() - start_time) * 1000)
         success = len(errors) == 0
