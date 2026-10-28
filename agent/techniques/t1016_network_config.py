@@ -1,5 +1,6 @@
 import os
 import time
+import subprocess
 from shared.base import AttackTechnique
 from shared.models import TechniqueResult
 from shared.logging_config import get_logger
@@ -7,7 +8,7 @@ from shared.logging_config import get_logger
 logger = get_logger("t1016")
 
 class NetworkConfigDiscovery(AttackTechnique):
-    """T1016 - Discovers network configuration on the target maching."""
+    """T1016 - Discovers network configuration on the target machine."""
     technique_id = "T1016"
     technique_name = "Network Configuration Discovery"
     tactic = "Discovery"
@@ -65,18 +66,18 @@ class NetworkConfigDiscovery(AttackTechnique):
         with open("/proc/net/route", "r") as f:
             next(f) #skip the header line
             for line in f:
-                feilds = line.strip().split()
+                fields = line.strip().split()
                 if len(fields) < 8:
                     continue
 
-                iface = feilds[0]
+                iface = fields[0]
                 destination = self._hex_to_ip(fields[1])
                 gateway = self._hex_to_ip(fields[2])
 
                 routes.append({
                     "interface": iface,
                     "destination": destination,
-                    "gateway": agteway,
+                    "gateway": gateway,
                     "is_default": fields[1] == "00000000"
                 })
 
@@ -89,7 +90,6 @@ class NetworkConfigDiscovery(AttackTechnique):
 
     def _get_interfaces(self) -> list:
         """Get network interfaces and IP addresses using ip addr."""
-        import subprocess
         interfaces = []
         current = None
         output = subprocess.check_output(["ip", "addr"], text=True)
