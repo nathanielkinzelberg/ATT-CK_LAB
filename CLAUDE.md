@@ -66,6 +66,18 @@ At the end of every phase, before Nathaniel commits, always update:
 3. **docs/journal/phase_NN_*.md** — fill in all sections: dates, concepts learned, problems encountered, final code reference
 4. **docs/glossary.md** — add any new terms introduced in this phase
 
+## Environment — venv Paths
+
+| Machine | venv activate path |
+|---------|-------------------|
+| Laptop (controller) | `source /home/nathaniel-kinzelberg/Projects/attackLab/controller/venv/bin/activate` |
+| Raspberry Pi (agent) | `source ~/attacklab/agent/venv/bin/activate` |
+
+Pi SSH: `ssh nathanielkinzelberg@192.168.1.101`
+Pi project root: `~/attacklab/` (lowercase)
+Start agent: `python3 -m uvicorn agent.main:app --host 0.0.0.0 --port 8000`
+Run a technique: `python -m controller.controller --target 192.168.1.101 run --technique <TECHNIQUE_ID>`
+
 ## Key Rules for Claude
 
 - Never generate the entire finished project at once.
