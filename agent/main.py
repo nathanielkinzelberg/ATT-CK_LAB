@@ -4,10 +4,12 @@ from fastapi import FastAPI, Depends, HTTPException   # FastAPI creates the serv
 from dotenv import load_dotenv         # loads the .env file into memory
 from shared.logging_config import get_logger  # shared logging setup from Phase 1
 from agent.auth import verify_token    # our token check function from auth.py
-from agent.techniques.t1082_system_info import SystemInfoDiscovery       # T1082 technique implementation 
-from agent.techniques.t1057_process_discovery import ProcessDiscovery    # T1057 technique implementation
-from agent.techniques.t1087_account_discovery import AccountDiscovery    # T1087 technique implementation
-from agent.techniques.t1016_network_config import NetworkConfigDiscovery # T1016 technique implementation
+from agent.techniques.t1082_system_info import SystemInfoDiscovery          # T1082 technique implementation 
+from agent.techniques.t1057_process_discovery import ProcessDiscovery       # T1057 technique implementation
+from agent.techniques.t1087_account_discovery import AccountDiscovery       # T1087 technique implementation
+from agent.techniques.t1016_network_config import NetworkConfigDiscovery    # T1016 technique implementation
+from agent.techniques.t1046_network_service_scan import NetworkServiceScan  # T1046 technique implementation
+
 
 
 
@@ -74,6 +76,7 @@ async def execute_technique(technique_id: str, verified=Depends(verify_token)):
         "T1057": ProcessDiscovery,      # maps the ID to the Process Discovery class
         "T1087": AccountDiscovery,      # maps the ID to the Account Discovery class
         "T1016": NetworkConfigDiscovery,# maps the ID to the Network Config Discovery class
+        "T1046": NetworkServiceScan,    # maps the ID to the Network Service Scan class
     }
 
     if technique_id not in techniques:
