@@ -49,13 +49,13 @@ JSON report  ·  terminal output  ·  logs
 | T1057 | Process Discovery | Discovery | Complete |
 | T1087 | Account Discovery | Discovery | Complete |
 | T1016 | System Network Configuration Discovery | Discovery | Complete |
-| T1046 | Network Service Scanning | Discovery | Planned |
+| T1046 | Network Service Scanning | Discovery | Complete |
 
 ---
 
 ## Project Status
 
-> **Phase 8 — T1046 Network Service Scanning** (current)
+> **Phase 9 — Automated Tests** (current)
 
 This project is under active development. See the roadmap below.
 
@@ -162,7 +162,7 @@ pytest
 - [x] Phase 5 — T1057 Process Discovery
 - [x] Phase 6 — T1087 Account Discovery
 - [x] Phase 7 — T1016 Network Configuration Discovery
-- [ ] Phase 8 — T1046 Network Service Scanning
+- [x] Phase 8 — T1046 Network Service Scanning
 - [ ] Phase 9 — Automated tests
 - [ ] Phase 10 — Reporting and structured output
 - [ ] Phase 11 — Deploy agent as a Raspberry Pi service
