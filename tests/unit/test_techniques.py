@@ -61,8 +61,7 @@ def test_scan_port_closed():
         result = t._scan_port("192.168.1.101", 9999)        # _scan_port now gets our fake socket
     assert result is None
 
-FAKE_MEMINFO = "MemTotal:       8000000 kB" \
-"MemAvailable:      4000000 kB"
+FAKE_MEMINFO = "MemTotal:       8000000 kB\nMemAvailable:      4000000 kB"
 
 def test_read_proc_meminfo():
     """_read_proc_meminfo should parse total and avalible RAM from /proc/meminfo."""
@@ -75,8 +74,8 @@ def test_read_proc_meminfo():
 def test_get_processes_returns_list():
     """_get_processes should return a list of process dicts with pid, name, and uid."""
     t = ProcessDiscovery()
-    fake_comm = mock_open(read_data="bach\n")
-    fake_status = mock_open(read_date="Uid:\t1000\t1000\t1000\t1000\n")
+    fake_comm = mock_open(read_data="bash\n")
+    fake_status = mock_open(read_data="Uid:\t1000\t1000\t1000\t1000\n")
 
     def open_side_effect(path, *args, **kwargs):
         if "comm" in path:
