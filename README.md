@@ -55,7 +55,7 @@ JSON report  ·  terminal output  ·  logs
 
 ## Project Status
 
-> **Phase 9 — Automated Tests** (current)
+> **Phase 10 — Reporting and Structured Output** (current)
 
 This project is under active development. See the roadmap below.
 
@@ -163,7 +163,7 @@ pytest
 - [x] Phase 6 — T1087 Account Discovery
 - [x] Phase 7 — T1016 Network Configuration Discovery
 - [x] Phase 8 — T1046 Network Service Scanning
-- [ ] Phase 9 — Automated tests
+- [x] Phase 9 — Automated tests
 - [ ] Phase 10 — Reporting and structured output
 - [ ] Phase 11 — Deploy agent as a Raspberry Pi service
 - [ ] Phase 12 — GitHub portfolio polish

@@ -1,6 +1,8 @@
 from agent.techniques.t1016_network_config import NetworkConfigDiscovery
 from agent.techniques.t1087_account_discovery import AccountDiscovery
 from agent.techniques.t1046_network_service_scan import NetworkServiceScan
+from agent.techniques.t1082_system_info import SystemInfoDiscovery
+from agent.techniques.t1057_process_discovery import ProcessDiscovery
 
 from unittest.mock import patch, mock_open, MagicMock
 # mock_open: creates a fake file with whatever content we give it
@@ -58,3 +60,15 @@ def test_scan_port_closed():
     with patch("socket.socket", return_value=mock_socket):  # swap real socket with our fake one
         result = t._scan_port("192.168.1.101", 9999)        # _scan_port now gets our fake socket
     assert result is None
+
+FAKE_MEMINFO = "MemTotal:       8000000 kB" \
+"MemAvailable:      4000000 kB"
+
+def test_read_proc_meminfo():
+    """_read_proc_meminfo should parse total and avalible RAM from /proc/meminfo."""
+    t = SystemInfoDiscovery()
+    with patch("builtins.open", mock_open(read_data=FAKE_MEMINFO)):
+        result = t._read_proc_meminfo()
+    assert result["total_kb"] == 8000000
+    assert result["available_kb"] == 4000000
+

@@ -51,8 +51,8 @@ attackLab/
 | 6     | T1087 — Account Discovery            | Complete    |
 | 7     | T1016 — Network Config Discovery     | Complete    |
 | 8     | T1046 — Network Service Scanning     | Complete    |
-| 9     | Automated Tests                      | In Progress |
-| 10    | Reporting and Structured Output      | Not Started |
+| 9     | Automated Tests                      | Complete    |
+| 10    | Reporting and Structured Output      | In Progress |
 | 11    | Deploy Agent as Raspberry Pi Service | Not Started |
 | 12    | GitHub Portfolio Polish              | Not Started |
 | 13    | Résumé Bullets                       | Not Started |
