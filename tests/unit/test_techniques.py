@@ -2,9 +2,10 @@ from agent.techniques.t1016_network_config import NetworkConfigDiscovery
 from agent.techniques.t1087_account_discovery import AccountDiscovery
 from agent.techniques.t1046_network_service_scan import NetworkServiceScan
 
-from unittest.mock import patch, mock_open
-"""mock_open creates a fake file with whatever content we give it"""
-"""patch temporarily swaps the real open() with out fake one"""
+from unittest.mock import patch, mock_open, MagicMock
+# mock_open: creates a fake file with whatever content we give it
+# patch: temporarily swaps the real open() with our fake one
+# MagicMock: creates a fake object that pretends to be what you need — in this case a fake socket
 
 def test_hex_to_ip_default_gateway():
     """_hex_to_ip should convert little-endian hex to a dotted IP adress."""
@@ -14,7 +15,7 @@ def test_hex_to_ip_default_gateway():
 def test_hex_to_ip_localhost():
     """_hex_to_ip should correctly convert the loopback address."""
     t = NetworkConfigDiscovery()
-    assert t.hex_to_ip("010007F") == "127.0.0.1"
+    assert t._hex_to_ip("0100007F") == "127.0.0.1"
 
 FAKE_PASSWD = """root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
@@ -23,16 +24,37 @@ nathaniel:x:1000:1000::/home/nathaniel:/bin/bash"""
 def test_parse_passwd_returns_list():
     """_parse_passwd should return a list of account dicts."""
     t = AccountDiscovery()
-    with patch("bulitins.open", mock_open(read_data=FAKE_PASSWD)):
-        result = t.parse_passwd()
+    with patch("builtins.open", mock_open(read_data=FAKE_PASSWD)):
+        result = t._parse_passwd()
     assert isinstance(result, list)
     assert len(result) == 3
 
 def test_parse_passwd_fields():
     """_parse_passwd should correctly extract username, uid, and shell."""
-    t_= AccountDiscovery()
-    with patch("bullitins.open", mock_open(read_data=FAKE_PASSWD)):
+    t = AccountDiscovery()
+    with patch("builtins.open", mock_open(read_data=FAKE_PASSWD)):
         result = t._parse_passwd()
     nathaniel = next(a for a in result if a["username"] == "nathaniel")
     assert nathaniel["uid"] == 1000
     assert nathaniel["shell"] == "/bin/bash"
+
+def test_scan_port_open():
+    """_scan_port should return a dict when port is open (connect_ex returns 0)."""
+    t = NetworkServiceScan()
+    mock_socket = MagicMock()              # create a fake socket — no real network connection
+    mock_socket.connect_ex.return_value = 0  # tell the fake socket: return 0 meaning port is open
+    with patch("socket.socket", return_value=mock_socket):  # swap real socket with our fake one
+        result = t._scan_port("192.168.1.101", 22)          # _scan_port now gets our fake socket
+    assert result is not None
+    assert result["port"] == 22
+    assert result["service"] == "SSH"
+    assert result["state"] == "open"
+
+def test_scan_port_closed():
+    """_scan_port should return None when port is closed (connect_ex returns non-zero)."""
+    t = NetworkServiceScan()
+    mock_socket = MagicMock()                 # create a fake socket — no real network connection
+    mock_socket.connect_ex.return_value = 111 # tell the fake socket: return 111 meaning port is closed
+    with patch("socket.socket", return_value=mock_socket):  # swap real socket with our fake one
+        result = t._scan_port("192.168.1.101", 9999)        # _scan_port now gets our fake socket
+    assert result is None
