@@ -72,3 +72,23 @@ def test_read_proc_meminfo():
     assert result["total_kb"] == 8000000
     assert result["available_kb"] == 4000000
 
+def test_get_processes_returns_list():
+    """_get_processes should return a list of process dicts with pid, name, and uid."""
+    t = ProcessDiscovery()
+    fake_comm = mock_open(read_data="bach\n")
+    fake_status = mock_open(read_date="Uid:\t1000\t1000\t1000\t1000\n")
+
+    def open_side_effect(path, *args, **kwargs):
+        if "comm" in path:
+            return fake_comm()
+        return fake_status()
+
+    with patch("os.listdir", return_value=["1","2", "self", "net"]):
+        with patch("builtins.open", side_effect=open_side_effect):
+            result = t._get_processes()
+
+    assert isinstance(result, list)
+    assert len(result) == 2         # only "1" and "2" are numeric
+    assert result[0]["pid"] == 1
+    assert result[0]["name"] == "bash"
+    assert result[0]["uid"] == 1000
